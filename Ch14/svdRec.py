@@ -51,7 +51,7 @@ def standEst(dataMat, user, simMeas, item):
         if len(overLap) == 0: similarity = 0
         else: similarity = simMeas(dataMat[overLap,item], \
                                    dataMat[overLap,j])
-        print 'the %d and %d similarity is: %f' % (item, j, similarity)
+        #print 'the %d and %d similarity is: %f' % (item, j, similarity)
         simTotal += similarity
         ratSimTotal += similarity * userRating
     if simTotal == 0: return 0
@@ -68,7 +68,7 @@ def svdEst(dataMat, user, simMeas, item):
         if userRating == 0 or j==item: continue
         similarity = simMeas(xformedItems[item,:].T,\
                              xformedItems[j,:].T)
-        print 'the %d and %d similarity is: %f' % (item, j, similarity)
+        #print('the %d and %d similarity is: %f' % (item, j, similarity))
         simTotal += similarity
         ratSimTotal += similarity * userRating
     if simTotal == 0: return 0
@@ -82,7 +82,7 @@ def recommend(dataMat, user, N=3, simMeas=cosSim, estMethod=standEst):
         estimatedScore = estMethod(dataMat, user, simMeas, item)
         itemScores.append((item, estimatedScore))
     return sorted(itemScores, key=lambda jj: jj[1], reverse=True)[:N]
-
+'''
 def printMat(inMat, thresh=0.8):
     for i in range(32):
         for k in range(32):
@@ -107,4 +107,7 @@ def imgCompress(numSV=3, thresh=0.8):
         SigRecon[k,k] = Sigma[k]
     reconMat = U[:,:numSV]*SigRecon*VT[:numSV,:]
     print "****reconstructed matrix using %d singular values******" % numSV
-    printMat(reconMat, thresh)
+    printMat(reconMat, thresh)'''
+
+myMat = mat(loadExData2())
+print(recommend(myMat,1,estMethod=svdEst))
